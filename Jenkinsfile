@@ -43,7 +43,7 @@ pipeline {
                 echo "Running Docker container..."
                 sh '''
                     docker rm -f amit-web-container || true
-                    docker run -d --name amit-web-container -p 8080:80 amit-web-image
+                    docker run -d --name amit-web-container -p 80:80 amit-web-image
                 '''
             }
         }
