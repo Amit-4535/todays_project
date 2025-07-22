@@ -9,25 +9,10 @@ pipeline {
             }
         }
 
-        stage('Deploy index.html') {
+        stage('Prepare Files') {
             steps {
-                echo "Deploying index.html"
-                sh 'sudo mkdir -p /var/lib/jenkins/workspace/pipelinejob'
-                sh 'sudo cp index.html /var/lib/jenkins/workspace/pipelinejob/'
-            }
-        }
-
-        stage('Creating Amit Folder') {
-            steps {
-                echo "Creating Amit folder here..."
-                sh 'mkdir -p Amit'
-            }
-        }
-
-        stage('Creating dummy.txt in Amit folder') {
-            steps {
-                echo "Creating dummy.txt in Amit folder..."
-                sh 'echo "hey !! amit from the dummy.txt file" > Amit/dummy.txt'
+                echo "Creating dummy.txt and other files..."
+                sh 'echo "Hello Amit! This is dummy file." > dummy.txt'
             }
         }
 
@@ -47,7 +32,20 @@ pipeline {
                 '''
             }
         }
+
+        stage('Verify Files Inside Container') {
+            steps {
+                echo "Checking if files exist in the container..."
+                sh 'docker exec amit-web-container ls -l /opt/amitstuff'
+            }
+        }
+
+        stage('Verify Packages Installed') {
+            steps {
+                echo "Check if curl is installed"
+                sh 'docker exec amit-web-container curl --version'
+            }
+        }
     }
 }
-
 
