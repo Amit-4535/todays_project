@@ -30,6 +30,24 @@ pipeline {
                 sh 'echo "hey !! amit from the dummy.txt file" > Amit/dummy.txt'
             }
         }
+
+        stage('Build Docker Image') {
+            steps {
+                echo "Building Docker image..."
+                sh 'docker build -t amit-web-image .'
+            }
+        }
+
+        stage('Run Docker Container') {
+            steps {
+                echo "Running Docker container..."
+                sh '''
+                    docker rm -f amit-web-container || true
+                    docker run -d --name amit-web-container -p 8080:80 amit-web-image
+                '''
+            }
+        }
     }
 }
+
 
